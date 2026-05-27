@@ -1,0 +1,15 @@
+# Arquivos temporários e originais não organizados
+uploads/*.jpg
+uploads/*.jpeg
+uploads/*.JPG
+uploads/*.png
+uploads/*.pdf
+uploads/*.mp4
+uploads/*.PNG
+# Manter as subpastas organizadas
+!uploads/assets/
+!uploads/assets/**
+!uploads/galeria/
+!uploads/galeria/**
+!uploads/expositores/
+!uploads/expositores/**
