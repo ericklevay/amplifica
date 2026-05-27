@@ -39,6 +39,44 @@
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
     @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ===== RESPONSIVE CLASSES ===== */
+    .hero-inner {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column;
+      padding: 55px 72px;
+      align-items: center; justify-content: center;
+      text-align: center; max-width: 920px; margin: 0 auto;
+    }
+    .countdown-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem; max-width: 640px; margin: 0 auto;
+    }
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 4rem; align-items: center;
+    }
+    .grid-local {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 2.5rem; margin-top: 2rem; align-items: start;
+    }
+    .grid-galeria {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem; margin-top: 1.5rem;
+    }
+    @media (max-width: 860px) {
+      .hero-inner { padding: 80px 20px 32px; }
+    }
+    @media (max-width: 640px) {
+      .section-pad { padding: 3.5rem 1.25rem; }
+      .grid-galeria { grid-template-columns: repeat(2, 1fr); }
+      .container { padding: 0 1.25rem; }
+    }
+    @media (max-width: 480px) {
+      .countdown-grid { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -145,7 +183,7 @@ function Hero() {
       <div style={{ position:'absolute', inset:0, backgroundImage:'url(uploads/assets/hero.jpg)',
         backgroundSize:'cover', backgroundPosition:'center 30%', opacity:0.45 }}/>
       <div style={{ position:'absolute', inset:0, background:'linear-gradient(160deg, rgba(26,43,95,0.88) 0%, rgba(27,92,82,0.82) 42%, rgba(10,38,34,0.93) 100%)' }}/>
-      <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', padding:'55px 72px', alignItems:'center', justifyContent:'center', textAlign:'center', maxWidth:'920px', margin:'0 auto' }}>
+      <div className="hero-inner">
         <div style={{ marginBottom:'1.5rem', animation:'fadeUp 0.7s ease both' }}>
           <span style={{ fontFamily:'var(--font-b)', fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.2em',
             textTransform:'uppercase', color:'rgba(201,168,92,0.7)', background:'rgba(201,168,92,0.08)', border:'1px solid rgba(201,168,92,0.2)',
@@ -193,7 +231,7 @@ function Countdown() {
       <div style={{ maxWidth:800, margin:'0 auto', textAlign:'center' }}>
         <p style={{ fontFamily:'var(--font-b)', fontSize:'0.65rem', fontWeight:700, letterSpacing:'0.22em',
           textTransform:'uppercase', color:'rgba(201,168,92,0.55)', marginBottom:'2.5rem' }}>O evento começa em</p>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'0.85rem', maxWidth:640, margin:'0 auto' }}>
+        <div className="countdown-grid">
           {units.map(({num,label}) => (
             <div key={label} style={{ background:'rgba(27,92,82,0.15)', border:'1px solid rgba(201,168,92,0.18)',
               borderRadius:'18px', padding:'1.6rem 0.5rem' }}>
@@ -214,7 +252,7 @@ function Countdown() {
 function Sobre() {
   return (
     <section id="sobre" className="section-pad" style={{ maxWidth:1160, margin:'0 auto' }}>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px,1fr))', gap:'4rem', alignItems:'center' }}>
+      <div className="grid-2col">
         <div>
           <span className="tag">O evento</span>
           <h2 className="heading">Movimento Multicultural</h2>
@@ -228,7 +266,7 @@ function Sobre() {
         </div>
         <div style={{ position:'relative' }}>
           <div style={{ borderRadius:'20px', overflow:'hidden', aspectRatio:'4/3', border:'1px solid var(--border)' }}>
-            <img src="uploads/assets/hero.jpg" alt="Amplifica evento"
+            <img src="uploads/assets/hero.jpg" alt="Amplifica evento" loading="lazy"
               style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.85 }}/>
           </div>
           <div style={{ position:'absolute', bottom:'-1.1rem', right:'-1.1rem', background:'var(--gold)',
@@ -251,7 +289,7 @@ function MiniGallery({ photos }) {
             flex:1, aspectRatio:'1', overflow:'hidden', borderRadius:8, background:'rgba(27,92,82,0.18)',
             cursor: src ? 'zoom-in' : 'default', border:'1px solid rgba(201,168,92,0.1)' }}>
             {src ? (
-              <img src={src} alt={`foto ${i+1}`} style={{ width:'100%', height:'100%', objectFit:'cover',
+              <img src={src} alt={`foto ${i+1}`} loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover',
                 transition:'transform 0.3s, opacity 0.2s', opacity:0.88 }}
               onMouseEnter={e => { e.currentTarget.style.transform='scale(1.1)'; e.currentTarget.style.opacity='1'; }}
               onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.opacity='0.88'; }}
@@ -290,7 +328,7 @@ function ExpositorCard({ name, brand, tag, logo, instagram, galleryPhotos }) {
     onMouseLeave={e => { e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.borderColor='rgba(201,168,92,0.18)'; }}>
       <div style={{ aspectRatio:'1', overflow:'hidden', background:'#F4EFE6', flexShrink:0 }}>
         {logo ? (
-          <img src={logo} alt={brand} style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }}/>
+          <img src={logo} alt={brand} loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }}/>
         ) : (
           <div style={{ width:'100%', height:'100%', background:'linear-gradient(135deg, rgba(27,92,82,0.25), rgba(26,43,95,0.25))',
             display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -379,12 +417,12 @@ function Galeria() {
       <section id="galeria" className="section-pad" style={{ maxWidth:1160, margin:'0 auto' }}>
         <span className="tag">Memórias</span>
         <h2 className="heading">Galeria</h2>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'0.75rem', marginTop:'1.5rem' }}>
+        <div className="grid-galeria">
           {photos.map((p,i) => (
             <div key={i} style={{...(p.wide ? {gridColumn:'span 2'} : {}), borderRadius:12, overflow:'hidden',
               aspectRatio: p.wide ? '16/7' : '4/3', background:'rgba(27,92,82,0.15)', cursor:'zoom-in' }}
             onClick={() => setLb(p)}>
-              <img src={p.src} alt={p.alt} style={{ width:'100%', height:'100%', objectFit:'cover',
+              <img src={p.src} alt={p.alt} loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover',
                 transition:'transform 0.3s' }}
               onMouseEnter={e => e.currentTarget.style.transform='scale(1.05)'}
               onMouseLeave={e => e.currentTarget.style.transform='scale(1)'}
@@ -412,7 +450,7 @@ function Local() {
     <section id="local" className="section-pad" style={{ maxWidth:1160, margin:'0 auto' }}>
       <span className="tag">Onde acontece</span>
       <h2 className="heading">Localização</h2>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px,1fr))', gap:'2.5rem', marginTop:'2rem', alignItems:'start' }}>
+      <div className="grid-local">
         <div>
           <div className="card-glass" style={{ padding:'2rem', marginBottom:'1.25rem' }}>
             <div style={{ marginBottom:'1.5rem' }}>
